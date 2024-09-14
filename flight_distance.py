@@ -3,7 +3,7 @@ from math import *
 
 def get_aircraft_details(aircraft_type):
     # Load the CSV file
-    csv_file = 'aircraft.csv'  # Replace with the actual path if needed
+    csv_file = r'aircraft.csv'  # Replace with the actual path if needed
     df = pd.read_csv(csv_file)
 
     # Check if the aircraft type exists in the DataFrame
@@ -36,7 +36,7 @@ def get_airport_lat_long(identifiers):
         return "Please provide at least two airport identifiers."
 
     # Load the CSV file
-    csv_file = 'airport.csv'  # Replace with the actual path if needed
+    csv_file = r'airport.csv'  # Replace with the actual path if needed
     df = pd.read_csv(csv_file)
 
     # Efficiently filter rows where the 'Name' or 'IATA' matches any of the provided identifiers

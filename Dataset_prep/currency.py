@@ -1,8 +1,8 @@
 import pandas as pd
 
 # Load the CSV files
-csv1_file = 'currencyrates.csv'  # Replace with the path to your CSV1 file
-csv2_file = 'countrycurrency.csv'  # Replace with the path to your CSV2 file
+csv1_file = r'currencyrates.csv'  # Replace with the path to your CSV1 file
+csv2_file = r'countrycurrency.csv'  # Replace with the path to your CSV2 file
 
 # Read the CSVs into DataFrames
 df1 = pd.read_csv(csv1_file)  # This CSV contains just currency codes

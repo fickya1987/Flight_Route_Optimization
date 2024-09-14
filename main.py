@@ -14,7 +14,7 @@ trip_distance = calculate_distances(airport_identifiers)
 print("Distance b/w Airports: \n",trip_distance)
 
 #Get onroute weather
-weather = fetch_weather_along_route(airport_identifiers,lat_long_dict)
+weather = fetch_weather_for_all_routes(airport_identifiers,lat_long_dict)
 print("On Route weather: \n", weather)
 
 # # Ensure the graph is bidirectional (undirected)
