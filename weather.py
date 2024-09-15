@@ -1,12 +1,13 @@
 import requests
 import itertools
 from geopy.distance import geodesic
+from functools import lru_cache
 
 # Replace with your OpenWeather API key
 API_KEY = '9811dd1481209c64fba6cb2c90f27140'
 
 # Interpolation function to get intermediate points between airports
-def get_intermediate_points(start, end, num_points=4):
+def get_intermediate_points(start, end, num_points=2):
     points = []
     lat_step = (end[0] - start[0]) / (num_points + 1)
     lon_step = (end[1] - start[1]) / (num_points + 1)
@@ -18,6 +19,7 @@ def get_intermediate_points(start, end, num_points=4):
     return points
 
 # Fetch weather data for a given coordinate
+@lru_cache(maxsize=128)
 def fetch_weather(lat, lon):
     url = f'http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}&units=metric'
     response = requests.get(url)
@@ -65,26 +67,25 @@ def fetch_weather_for_all_routes(airport_identifiers, airports):
                 "weather": most_common_weather,
                 "temperature": round(avg_temperature, 2)
             })
-
     return route_factors
 
-# Example airport coordinates
-airports = {
-    'SIN': (1.3644, 103.9915),  # Singapore Changi Airport
-    'LAX': (33.9416, -118.4085),  # Los Angeles International Airport
-    'JFK': (40.6413, -73.7781),  # John F. Kennedy International Airport
-    'CDG': (49.0097, 2.5479),  # Charles de Gaulle Airport
-    'LHR': (51.4700, -0.4543)   # London Heathrow Airport
-}
+# # Example airport coordinates
+# airports = {
+#     'SIN': (1.3644, 103.9915),  # Singapore Changi Airport
+#     'LAX': (33.9416, -118.4085),  # Los Angeles International Airport
+#     'JFK': (40.6413, -73.7781),  # John F. Kennedy International Airport
+#     'CDG': (49.0097, 2.5479),  # Charles de Gaulle Airport
+#     'LHR': (51.4700, -0.4543)   # London Heathrow Airport
+# }
 
-airport_identifiers = ['SIN', 'LAX', 'JFK', 'CDG', 'LHR']  # Replace with actual identifiers
+# airport_identifiers = ['SIN', 'LAX', 'JFK', 'CDG', 'LHR']  # Replace with actual identifiers
 
-# Fetch the weather along all possible routes
-route_weather = fetch_weather_for_all_routes(airport_identifiers, airports)
+# # Fetch the weather along all possible routes
+# route_weather = fetch_weather_for_all_routes(airport_identifiers, airports)
 
-# Display the weather data for each route
-for route, factors in route_weather.items():
-    print(f"Route: {route}")
-    for factor in factors:
-        print(f"  Segment: {factor['segment']}, Weather: {factor['weather']}, Temperature: {factor['temperature']} °C")
-    print()
+# # Display the weather data for each route
+# for route, factors in route_weather.items():
+#     print(f"Route: {route}")
+#     for factor in factors:
+#         print(f"  Segment: {factor['segment']}, Weather: {factor['weather']}, Temperature: {factor['temperature']} °C")
+#     print()

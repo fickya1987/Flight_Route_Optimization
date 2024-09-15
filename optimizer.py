@@ -1,24 +1,27 @@
 import itertools
 
-# Define the distances between the airports
-distances = {
-    ('SIN', 'LAX'): 14101.48,
-    ('LAX', 'JFK'): 3974.20,
-    ('JFK', 'CDG'): 5833.66,
-}
+def extract_route_factors(raw_weather):
+    """
+    Extracts route factors from raw weather data by breaking down routes into individual segments.
 
-# Define the factors for each route segment
-route_factors = {('SIN', 'LAX'): {'weather': 'clear sky', 'temperature': 27.18}, ('LAX', 'JFK'): {'weather': 'clear sky', 'temperature': 25.37}, ('JFK', 
-'CDG'): {'weather': 'clear sky', 'temperature': 21.18}}
+    Parameters:
+    - raw_weather (dict): The raw weather data with routes and corresponding weather details.
 
-# Ensure the graph is bidirectional (undirected)
-for (a, b), dist in list(distances.items()):
-    distances[(b, a)] = dist
+    Returns:
+    - dict: A dictionary with segments as keys (in tuple format) and a list of weather and temperature data.
+    """
+    route_factors = {}
+    for route, segments in raw_weather.items():
+        for segment in segments:
+            segment_key = tuple(segment['segment'].split(' -> '))
+            if segment_key not in route_factors:
+                route_factors[segment_key] = []
+            route_factors[segment_key].append({
+                'weather': segment['weather'],
+                'temperature': segment['temperature']
+            })
+    return route_factors
 
-for (a, b), factors in list(route_factors.items()):
-    route_factors[(b, a)] = factors
-
-# Function to assign a risk factor based on weather
 def weather_risk(weather):
     risk_factors = {
         "clear sky": 0.1,
@@ -40,20 +43,30 @@ def temperature_impact(temperature):
     return 0.1  # Low impact in the ideal range
 
 # Calculate the adjusted cost for each route segment
-def calculate_adjusted_cost(segment, base_distance):
-    if segment not in route_factors:
-        segment = (segment[1], segment[0])  # Check the reversed segment
-    weather = route_factors[segment]["weather"]
-    temperature = route_factors[segment]["temperature"]
+def calculate_adjusted_cost(segment, base_distance, route_factors):
+    # Handle both directions of the segment
+    if segment in route_factors:
+        factors = route_factors[segment]
+    elif (segment[1], segment[0]) in route_factors:
+        factors = route_factors[(segment[1], segment[0])]
+    else:
+        raise ValueError(f"Segment {segment} not found in route factors.")
+
+    # Aggregate weather and temperature data if there are multiple entries for the segment
+    weather_descriptions = [factor["weather"] for factor in factors]
+    temperatures = [factor["temperature"] for factor in factors]
+
+    most_common_weather = max(set(weather_descriptions), key=weather_descriptions.count)
+    avg_temperature = sum(temperatures) / len(temperatures)
     
-    weather_cost = weather_risk(weather) * 100  # Weight for weather impact
-    temperature_cost = temperature_impact(temperature) * 50  # Weight for temperature impact
+    weather_cost = weather_risk(most_common_weather) * 100  # Weight for weather impact
+    temperature_cost = temperature_impact(avg_temperature) * 50  # Weight for temperature impact
     
     total_cost = base_distance + weather_cost + temperature_cost
     return total_cost
 
 # Update the distance function to include additional factors
-def calculate_route_distance(route, distances):
+def calculate_route_distance(route, distances, route_factors):
     """Calculate the total cost for a given route, including additional factors."""
     total_distance = 0
     for i in range(len(route) - 1):
@@ -61,35 +74,30 @@ def calculate_route_distance(route, distances):
         if segment not in distances:
             segment = (route[i + 1], route[i])
         base_distance = distances[segment]
-        total_distance += calculate_adjusted_cost(segment, base_distance)
+        total_distance += calculate_adjusted_cost(segment, base_distance, route_factors)
+    
     # Add distance to return to the starting point
     last_segment = (route[-1], route[0])
     if last_segment not in distances:
         last_segment = (route[0], route[-1])
     base_distance = distances[last_segment]
-    total_distance += calculate_adjusted_cost(last_segment, base_distance)
+    total_distance += calculate_adjusted_cost(last_segment, base_distance, route_factors)
     
     return total_distance
 
-def find_optimal_route(airports, distances):
+def find_optimal_route(airports, distances, route_factors):
     """Find the optimal route that covers all airports."""
     best_route = None
     min_distance = float('inf')
 
     # Generate all possible permutations of the route
     for route in itertools.permutations(airports):
-        current_distance = calculate_route_distance(route, distances)
-        if current_distance < min_distance:
-            min_distance = current_distance
-            best_route = route
+        try:
+            current_distance = calculate_route_distance(route, distances, route_factors)
+            if current_distance < min_distance:
+                min_distance = current_distance
+                best_route = route
+        except ValueError as e:
+            print(e)  # Log the error to debug missing segments
 
     return best_route, min_distance
-
-# List of all airports
-airports = ['SIN', 'LAX', 'JFK', 'CDG']
-
-# Find the optimal route with the new cost metric
-optimal_route, optimal_distance = find_optimal_route(airports, distances)
-
-print("Optimal Route:", " -> ".join(optimal_route) + f" -> {optimal_route[0]}")
-print("Total Adjusted Distance/Cost:", optimal_distance)
