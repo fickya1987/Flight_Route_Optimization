@@ -101,9 +101,10 @@ def calculate_distances(airport_identifiers):
 # aircraft_specs = get_aircraft_details(aircraft_type)
 # print(aircraft_specs)
 
-# airport_list = ['SIN','CDG']
+# airport_list = ['SIN','CDG', 'BOM']
 # print(get_airport_lat_long(airport_list))
-# print(calculate_distances(airport_list))
+# trip_distance = calculate_distances(airport_list)
+# print(trip_distance)
 
 # fuel_burn_rate = aircraft_specs['Fuel_Consumption_kg/hr']
 # cruising_speed = aircraft_specs['Max_Fuel_Capacity_kg']
