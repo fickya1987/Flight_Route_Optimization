@@ -87,23 +87,3 @@ def fetch_weather_for_all_routes(airport_identifiers, airports):
 
     return route_factors
 
-# # Example usage
-# airports = {
-#     'SIN': (1.3644, 103.9915),  # Singapore Changi Airport
-#     'LAX': (33.9416, -118.4085),  # Los Angeles International Airport
-#     'JFK': (40.6413, -73.7781),  # John F. Kennedy International Airport
-#     'CDG': (49.0097, 2.5479),  # Charles de Gaulle Airport
-#     'LHR': (51.4700, -0.4543)   # London Heathrow Airport
-# }
-
-# airport_identifiers = ['SIN', 'LAX', 'JFK', 'CDG', 'LHR']  # Replace with actual identifiers
-
-# # Fetch the weather along all possible routes
-# route_weather = fetch_weather_for_all_routes(airport_identifiers, airports)
-
-# # Display the weather data for each route
-# for route, factors in route_weather.items():
-#     print(f"Route: {route}")
-#     for factor in factors:
-#         print(f"  Segment: {factor['segment']}, Weather: {factor['weather']}, Temperature: {factor['temperature']} °C")
-#     print()

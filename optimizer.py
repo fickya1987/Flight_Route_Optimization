@@ -95,7 +95,7 @@ def find_optimal_route(airports, distances, route_factors):
         try:
             current_distance = calculate_route_distance(route, distances, route_factors)
             if current_distance < min_distance:
-                min_distance = current_distance
+                min_distance = round(current_distance,2)
                 best_route = route
         except ValueError as e:
             print(e)  # Log the error to debug missing segments

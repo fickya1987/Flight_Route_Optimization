@@ -29,3 +29,8 @@ optimal_route, optimal_distance = find_optimal_route(airport_identifiers, trip_d
 print("Optimal Route:", " -> ".join(optimal_route) + f" -> {optimal_route[0]}")
 print("Total Adjusted Distance/Cost:", optimal_distance)
 
+aircraft_type = input("Enter the aircraft type: ")
+
+# Check if the aircraft can fly the route without refuel
+result = can_fly_route(aircraft_type, airport_identifiers)
+print(result)
