@@ -27,7 +27,7 @@ optimal_route, optimal_distance = find_optimal_route(airport_identifiers, trip_d
 
 # Display the optimal route and the total adjusted distance/cost
 print("Optimal Route:", " -> ".join(optimal_route) + f" -> {optimal_route[0]}")
-print("Total Adjusted Distance/Cost:", optimal_distance)
+print("Total Adjusted Distance:", optimal_distance)
 
 aircraft_type = input("Enter the aircraft type: ")
 

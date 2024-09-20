@@ -121,7 +121,7 @@ def calculate_distances(airport_identifiers):
 
     return distances
 
-def calculate_fuel_and_time(distance, cruising_speed, fuel_burn_rate, reserve_fuel_percentage, max_fuel_capacity):
+def calculate_fuel_and_time(distance, cruising_speed, fuel_burn_rate, reserve_fuel_percentage, max_fuel_capacity, climb_descent_fraction=0.02):
     """
     Calculate the total fuel required for a given distance including reserve fuel and flight time.
 
@@ -133,24 +133,20 @@ def calculate_fuel_and_time(distance, cruising_speed, fuel_burn_rate, reserve_fu
     :return: Total fuel required including reserve, and estimated flight time
     """
     # Phase speeds and times
-    climb_speed = 280  # km/h
-    climb_time = 15 / 60  # 15 minutes in hours
-    descent_speed = 250  # km/h
-    descent_time = 10 / 60  # 10 minutes in hours
-
-    # Calculate distances for each phase
-    climb_distance = climb_speed * climb_time
-    descent_distance = descent_speed * descent_time
-    cruise_distance = distance - (climb_distance + descent_distance)
+    climb_speed = cruising_speed*0.7
+    descent_speed = cruising_speed*0.6  # km/h
+    climb_descent_distance = distance * climb_descent_fraction
+    cruise_distance = distance - (2 * climb_descent_distance)  # Remaining distance for cruise
 
     # Adjust if cruise distance is negative (short flights)
     if cruise_distance < 0:
-        climb_time = climb_distance / climb_speed
-        descent_time = descent_distance / descent_speed
+        climb_time = climb_descent_distance / climb_speed
+        descent_time = climb_descent_distance / descent_speed
         cruise_distance = 0
 
     cruise_time = cruise_distance / cruising_speed
-
+    climb_time = climb_descent_distance / climb_speed
+    descent_time = climb_descent_distance / descent_speed
     # Total flight time
     total_flight_time = climb_time + cruise_time + descent_time
 

@@ -48,7 +48,7 @@ def check_route(airport_selections, aircraft_type):
     # Convert all dictionary keys to strings for JSON compatibility
     return {
         "Optimal Route": " -> ".join(optimal_route) + f" -> {optimal_route[0]}",
-        "Total Adjusted Distance/Cost": str(optimal_distance),  # Convert to string if necessary
+        "Total Round Trip Distance": str(optimal_distance),  # Convert to string if necessary
         "Can Fly Route": str(result)  # Convert to string if necessary
     }
 

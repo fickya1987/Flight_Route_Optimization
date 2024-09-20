@@ -7,7 +7,7 @@ from functools import lru_cache
 API_KEY = '9811dd1481209c64fba6cb2c90f27140'
 
 # Interpolation function to get intermediate points between airports
-def get_intermediate_points(start, end, num_points=2):
+def get_intermediate_points(start, end, num_points=4):
     points = []
     lat_step = (end[0] - start[0]) / (num_points + 1)
     lon_step = (end[1] - start[1]) / (num_points + 1)
