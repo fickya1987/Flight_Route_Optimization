@@ -1,36 +1,45 @@
 import pandas as pd
 from flight_distance import *
-from optimizer import *
+from optimize import *
 from weather import *
 
-airport_identifiers = ['BLR', 'SFO']  # Replace with actual identifiers
+airport_identifiers = ['CCU', 'SIN', 'LHR']  # Replace with actual identifiers
 
-#Get Airport Coordinates
+# Step 1: Get Airport Coordinates
 lat_long_dict = get_airport_lat_long(airport_identifiers)
-# print("Coordinates: \n",lat_long_dict)
 
-#Get Distance between each node (airports)
+# Step 2: Get Distance between each node (airports)
 trip_distance = calculate_distances(airport_identifiers)
-# print("Distance b/w Airports: \n",trip_distance)
 
-#Get onroute weather
+# Step 3: Get on-route weather
+# Assuming 'fetch_weather_for_all_routes' is available in weather module
 raw_weather = fetch_weather_for_all_routes(airport_identifiers, lat_long_dict)
 route_factors = extract_route_factors(raw_weather)
-# print("On Route weather: \n", raw_weather)
 
-# # Ensure the graph is bidirectional (undirected)
+# Step 4: Ensure the graph is bidirectional (undirected)
 for (a, b), dist in list(trip_distance.items()):
     trip_distance[(b, a)] = dist
 
-# Find the optimal route with the new cost metric
+# Step 5: Find the optimal route based on weather, temperature, and distance
 optimal_route, optimal_distance = find_optimal_route(airport_identifiers, trip_distance, route_factors)
 
-# Display the optimal route and the total adjusted distance/cost
+# Display the optimal route and total adjusted distance
 print("Optimal Route:", " -> ".join(optimal_route) + f" -> {optimal_route[0]}")
-print("Total Round Trip Distance:", optimal_distance)
+print("Total Round Trip Distance:", optimal_distance, "km")
 
-aircraft_type = "Boeing 777-200LR"
+# Step 6: Fetch Aircraft Details (e.g., Boeing 787-9)
+aircraft_type = "Boeing 737-800"
+aircraft_specs = get_aircraft_details(aircraft_type)
 
-# Check if the aircraft can fly the route without refuel
-result = can_fly_route(aircraft_type, airport_identifiers)
-print(result)
+# Check if aircraft details were retrieved successfully
+if isinstance(aircraft_specs, str):
+    print(aircraft_specs)  # Print error if aircraft not found
+else:
+    # Step 7: Check if the aircraft can fly the route
+    route_feasibility = check_route_feasibility(optimal_route, trip_distance, aircraft_specs)
+
+    if route_feasibility["Can Fly Entire Route"]:
+        print(f"Total fuel required for the entire route: {route_feasibility['Total Fuel Required (kg)']} kg")
+        print(f"Total flight time for the entire route: {route_feasibility['Total Flight Time (hrs)']} hours")
+    else:
+        print("The aircraft cannot fly the entire route without refueling for at least one sector.")
