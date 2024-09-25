@@ -29,3 +29,16 @@ This project focuses on optimizing flight routes to minimize travel time and cos
     python main.py
     ```
 2. Follow the on-screen instructions to input your flight details.
+
+---
+
+title: Flight Route Optimization
+emoji: ✈️
+colorFrom: blue
+colorTo: green
+sdk: streamlit
+sdk_version: "1.0"
+app_file: app.py
+pinned: false
+
+---
