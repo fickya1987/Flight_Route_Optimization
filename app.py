@@ -102,14 +102,14 @@ def check_route(airport_selections, aircraft_type):
         result = {
             "Optimal Route": " -> ".join(optimal_route) + f" -> {optimal_route[0]}",
             "Total Round Trip Distance": str(optimal_distance) + " km",
-            "Can Fly Entire Route": "No, refueling required in one or more sectors.",
+            "Can Fly Each Sector": "No, refueling required in one or more sectors.",
             "Sector Details": sector_details
         }
     else:
         result = {
             "Optimal Route": " -> ".join(optimal_route) + f" -> {optimal_route[0]}",
             "Total Round Trip Distance": str(optimal_distance) + " km",
-            "Can Fly Entire Route": "Yes, no refueling required.",
+            "Can Fly Each Sector": "Yes, no refueling required.",
             "Sector Details": sector_details
         }
     
