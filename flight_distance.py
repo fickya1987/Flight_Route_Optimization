@@ -24,7 +24,15 @@ def get_airport_lat_long(identifiers):
     Get latitude and longitude for a list of airport identifiers (IATA codes).
     """
     csv_file = 'airport.csv'
-    df = pd.read_csv(csv_file)
+    parquet_file = 'airport.parquet'
+    
+    # Try reading the parquet file first
+    try:
+        df = pd.read_parquet(parquet_file)
+    except FileNotFoundError:
+        # If parquet file is not found, fall back to reading the CSV file
+        df = pd.read_csv(csv_file)
+    
     df_filtered = df[df['Airport_Name'].isin(identifiers) | df['IATA'].isin(identifiers)]
     lat_long_dict = {row['IATA']: (row['Lat'], row['Long']) for _, row in df_filtered.iterrows()}
     return lat_long_dict

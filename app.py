@@ -4,9 +4,8 @@ from map_generator import *
 from flight_distance import *
 from optimize import *
 from weather import *
-
-# Load airport data and aircraft data from CSV files
-airport_df = pd.read_csv(r'airport.csv')  # Adjust the path to your CSV file
+# Load airport data and aircraft data from Parquet and CSV files
+airport_df = pd.read_parquet(r'airport.parquet')  # Adjust the path to your Parquet file
 aircraft_df = pd.read_csv(r'aircraft.csv')  # Adjust the path to your CSV file
 
 airport_options = [f"{row['IATA']} - {row['Airport_Name']}" for _, row in airport_df.iterrows()]
@@ -117,7 +116,7 @@ def check_route(airport_selections, aircraft_type):
     return result, map_html
 
 # Gradio Interface
-with gr.Blocks(theme='dark') as demo:
+with gr.Blocks(theme=gr.themes.Default()) as demo:
     gr.Markdown("## Airport Route Feasibility Checker")
 
     # Place components in two columns for results and map
