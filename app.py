@@ -117,7 +117,7 @@ def check_route(airport_selections, aircraft_type):
     return result, map_html
 
 # Gradio Interface
-with gr.Blocks() as demo:
+with gr.Blocks(theme='dark') as demo:
     gr.Markdown("## Airport Route Feasibility Checker")
 
     # Place components in two columns for results and map
