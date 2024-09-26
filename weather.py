@@ -1,6 +1,5 @@
 import requests
 import itertools
-from geopy.distance import geodesic
 
 # Replace with your OpenWeather API key
 API_KEY = '9811dd1481209c64fba6cb2c90f27140'
