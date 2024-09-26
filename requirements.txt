@@ -1,6 +1,5 @@
 numpy
 pandas
 geopy
-functools32
 folium
 requests

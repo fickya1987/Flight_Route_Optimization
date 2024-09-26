@@ -1,7 +1,6 @@
 import requests
 import itertools
 from geopy.distance import geodesic
-from functools import lru_cache
 
 # Replace with your OpenWeather API key
 API_KEY = '9811dd1481209c64fba6cb2c90f27140'
@@ -19,7 +18,6 @@ def get_intermediate_points(start, end, num_points=4):
     return points
 
 # Fetch weather data for a given coordinate
-@lru_cache(maxsize=128)
 def fetch_weather(lat, lon):
     url = f'http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}&units=metric'
     response = requests.get(url)
