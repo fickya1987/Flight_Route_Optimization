@@ -3,5 +3,4 @@ pandas
 geopy
 functools
 folium
-itertools
 requests
