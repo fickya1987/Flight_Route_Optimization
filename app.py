@@ -8,7 +8,7 @@ from weather import *
 airport_df = pd.read_parquet(r'airport.parquet')  # Adjust the path to your Parquet file
 aircraft_df = pd.read_csv(r'aircraft.csv')  # Adjust the path to your CSV file
 
-airport_options = [f"{row['IATA']} - {row['Airport_Name']}" for _, row in airport_df.iterrows()]
+airport_options = [f"{row['IATA']} - {row['Airport_Name']} - {row['Country']}" for _, row in airport_df.iterrows()]
 airports_dict = {row['IATA']: row['Airport_Name'] for _, row in airport_df.iterrows()}  # For map display
 
 # Ensure the correct column is used for aircraft types
@@ -75,6 +75,8 @@ with gr.Blocks(theme=gr.themes.Default()) as demo:
         inputs=[airport_selector, aircraft_selector], 
         outputs=[result_output, map_output]
     )
+    
+    gr.Markdown("**Note:** The actual flight time and performance may vary since the dataset used is very rudimentary. In the real world, the same aircraft can have different internal configurations, leading to variations in flight time and fuel consumption.")
 
 # Launch the Gradio app
 demo.launch()

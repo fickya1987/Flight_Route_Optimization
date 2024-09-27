@@ -18,8 +18,9 @@ license: mit
 
 This project focuses on optimizing flight routes to minimize travel time and costs using advanced algorithms and data analysis techniques.
 
-## Features
+> **Note:** The actual flight time and performance may vary since the dataset used is very rudimentary. In the real world, the same aircraft can have different internal configurations, leading to variations in flight time and fuel consumption.
 
+## Features
 - Efficient route calculation
 - Cost optimization
 
