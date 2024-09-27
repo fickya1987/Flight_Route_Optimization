@@ -12,6 +12,8 @@ license: mit
 
 # Flight Route Optimization
 
+## Check out the demo here -  [HuggingFace Space](https://huggingface.co/spaces/souvik0306/Flight_Route_Planner)
+
 ## Overview
 
 This project focuses on optimizing flight routes to minimize travel time and costs using advanced algorithms and data analysis techniques.
@@ -20,8 +22,6 @@ This project focuses on optimizing flight routes to minimize travel time and cos
 
 - Efficient route calculation
 - Cost optimization
-- Real-time data integration
-- User-friendly interface
 
 ## Installation
 
@@ -42,9 +42,7 @@ This project focuses on optimizing flight routes to minimize travel time and cos
 
 1. Run the main script:
    ```bash
-   python main.py
+   python app.py
    ```
-2. Follow the on-screen instructions to input your flight details.
-
-
+2. Check out the [live demo](https://huggingface.co/spaces/souvik0306/Flight_Route_Planner) to see the project in action.
 ---

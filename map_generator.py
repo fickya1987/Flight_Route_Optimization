@@ -57,8 +57,8 @@ def create_route_map(airports, lat_long_dict, optimal_route, refuel_sectors):
      bottom: 50px; left: 50px; width: 250px; height: 90px; 
      background-color: white; border:2px solid grey; z-index:9999; font-size:14px;">
      &nbsp; <strong>Legend</strong><br>
-     &nbsp; <i class="fa fa-circle" style="color:red"></i> Solid line: No refuel required<br>
-     &nbsp; <i class="fa fa-circle--" style="color:red"></i> Dotted line: Refuel required
+     &nbsp; <i class="fa fa-minus" style="color:red"></i> Solid line: No refuel required<br>
+     &nbsp; <i class="fa fa-ellipsis-h" style="color:red"></i> Dotted line: Refuel required
      </div>
     '''
     route_map.get_root().html.add_child(folium.Element(legend_html))
