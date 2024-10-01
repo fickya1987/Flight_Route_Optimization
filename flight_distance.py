@@ -1,5 +1,6 @@
 import pandas as pd
 from math import radians, sin, cos, sqrt, asin
+import time
 
 ### Modular Flight Calculation Functions ###
 
@@ -23,15 +24,12 @@ def get_airport_lat_long(identifiers):
     """
     Get latitude and longitude for a list of airport identifiers (IATA codes).
     """
-    csv_file = 'airport.csv'
-    parquet_file = 'airport.parquet'
-    
-    # Try reading the parquet file first
-    try:
-        df = pd.read_parquet(parquet_file)
-    except FileNotFoundError:
-        # If parquet file is not found, fall back to reading the CSV file
-        df = pd.read_csv(csv_file)
+    csv_file = 'airport.csv' 
+       
+    start_time = time.time()
+    df = pd.read_csv(csv_file)
+    read_time = time.time() - start_time
+    print(f"CSV file read in {read_time:.4f} seconds")
     
     df_filtered = df[df['Airport_Name'].isin(identifiers) | df['IATA'].isin(identifiers)]
     lat_long_dict = {row['IATA']: (row['Lat'], row['Long']) for _, row in df_filtered.iterrows()}

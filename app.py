@@ -4,9 +4,9 @@ from map_generator import *
 from flight_distance import *
 from optimize import *
 from weather import *
-# Load airport data and aircraft data from Parquet and CSV files
-airport_df = pd.read_parquet(r'airport.parquet')  # Adjust the path to your Parquet file
-aircraft_df = pd.read_csv(r'aircraft.csv')  # Adjust the path to your CSV file
+
+airport_df = pd.read_csv(r'airport.csv') 
+aircraft_df = pd.read_csv(r'aircraft.csv')  
 
 airport_options = [f"{row['IATA']} - {row['Airport_Name']} - {row['Country']}" for _, row in airport_df.iterrows()]
 airports_dict = {row['IATA']: row['Airport_Name'] for _, row in airport_df.iterrows()}  # For map display
