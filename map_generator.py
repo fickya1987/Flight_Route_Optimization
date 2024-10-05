@@ -70,14 +70,35 @@ def create_route_map(airports, lat_long_dict, optimal_route, refuel_sectors):
     route_map.fit_bounds(bounds)
 
     # Add custom legend as a child of the map
+    # Add custom legend as a child of the map
     legend_html = '''
-     <div style="position: fixed; 
-     bottom: 50px; left: 50px; width: 250px; height: 90px; 
-     background-color: white; border:2px solid grey; z-index:9999; font-size:14px;">
-     &nbsp; <strong>Legend</strong><br>
-     &nbsp; <i class="fa fa-minus" style="color:red"></i> Solid line: No refuel required<br>
-     &nbsp; <i class="fa fa-ellipsis-h" style="color:red"></i> Dotted line: Refuel required
-     </div>
+    <div style="
+        position: fixed; 
+        bottom: 50px; 
+        left: 50px; 
+        width: 250px; 
+        height: 90px; 
+        background-color: white; 
+        border: 2px solid grey; 
+        z-index: 9999; 
+        font-size: 14px;
+        padding: 10px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    ">
+        <strong>Legend</strong><br>
+        <i class="fa fa-minus" style="color:red"></i> Solid line: No refuel required<br>
+        <i class="fa fa-ellipsis-h" style="color:red"></i> Dotted line: Refuel required
+    </div>
+    <style>
+        @media (max-width: 600px) {
+            div[style*="position: fixed"] {
+                bottom: 10px !important;
+                left: 10px !important;
+                width: 200px !important;
+                font-size: 12px !important;
+            }
+        }
+    </style>
     '''
     route_map.get_root().html.add_child(folium.Element(legend_html))
 
