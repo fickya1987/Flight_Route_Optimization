@@ -38,8 +38,8 @@ def check_route(airport_selections, aircraft_type):
         result = {
             "Optimal Route": " -> ".join(optimal_route) + f" -> {optimal_route[0]}",
             "Total Round Trip Distance": f"{optimal_distance} km",
-            "Total Fuel Required (kg)": feasibility_result["Total Fuel Required (kg)"],
-            "Total Flight Time": feasibility_result["Total Flight Time (hrs)"],
+            "Round Trip Fuel Required (kg)": feasibility_result["Total Fuel Required (kg)"],
+            "Round Trip Flight Time": feasibility_result["Total Flight Time (hrs)"],
             "Can Fly Entire Route": "Yes",
             "Sector Details": feasibility_result["Sector Details"]
         }
