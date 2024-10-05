@@ -34,22 +34,52 @@ def check_route(airport_selections, aircraft_type):
     feasibility_result = check_route_feasibility(optimal_route, trip_distance, aircraft_specs)
     map_html = create_route_map(airports_dict, lat_long_dict, optimal_route, feasibility_result["Refuel Sectors"])
     
+    sector_details_html = """
+    <table border="1" style="border-collapse: collapse; width: 100%;">
+        <tr>
+            <th>Sector</th>
+            <th>Fuel Required (kg)</th>
+            <th>Flight Time (hrs)</th>
+            <th>Refuel Required</th>
+        </tr>
+    """
+    for sector in feasibility_result["Sector Details"]:
+        sector_details_html += f"""
+        <tr>
+            <td>{sector['Sector']}</td>
+            <td>{sector['Fuel Required (kg)']}</td>
+            <td>{sector['Flight Time (hrs)']}</td>
+            <td>{sector['Refuel Required']}</td>
+        </tr>
+        """
+    sector_details_html += "</table>"
+
     if feasibility_result["Can Fly Entire Route"]:
-        result = {
-            "Optimal Route": " -> ".join(optimal_route) + f" -> {optimal_route[0]}",
-            "Total Round Trip Distance": f"{optimal_distance} km",
-            "Round Trip Fuel Required (kg)": feasibility_result["Total Fuel Required (kg)"],
-            "Round Trip Flight Time (hrs)": feasibility_result["Total Flight Time (hrs)"],
-            "Can Fly Entire Route": "Yes",
-            "Sector Details": feasibility_result["Sector Details"]
-        }
+        result = f"""
+        <h3>Optimal Route</h3>
+        <p>{" -> ".join(optimal_route) + f" -> {optimal_route[0]}"}</p>
+        <h3>Total Round Trip Distance</h3>
+        <p>{optimal_distance} km</p>
+        <h3>Round Trip Fuel Required (kg)</h3>
+        <p>{feasibility_result["Total Fuel Required (kg)"]}</p>
+        <h3>Round Trip Flight Time (hrs)</h3>
+        <p>{feasibility_result["Total Flight Time (hrs)"]}</p>
+        <h3>Can Fly Entire Route</h3>
+        <p>Yes</p>
+        <h3>Sector Details</h3>
+        {sector_details_html}
+        """
     else:
-        result = {
-            "Optimal Route": " -> ".join(optimal_route) + f" -> {optimal_route[0]}",
-            "Total Round Trip Distance": f"{optimal_distance} km",
-            "Can Fly Entire Route": "No, refueling required in one or more sectors.",
-            "Sector Details": feasibility_result["Sector Details"]
-        }
+        result = f"""
+        <h3>Optimal Route</h3>
+        <p>{" -> ".join(optimal_route) + f" -> {optimal_route[0]}"}</p>
+        <h3>Total Round Trip Distance</h3>
+        <p>{optimal_distance} km</p>
+        <h3>Can Fly Entire Route</h3>
+        <p>No, refueling required in one or more sectors.</p>
+        <h3>Sector Details</h3>
+        {sector_details_html}
+        """
     
     return result, map_html
 
@@ -63,7 +93,7 @@ with gr.Blocks(theme=gr.themes.Default()) as demo:
             airport_selector = gr.Dropdown(airport_options, multiselect=True, label="Select Airports (IATA - Name)")
             aircraft_selector = gr.Dropdown(aircraft_options, label="Select Aircraft Type")
             check_button = gr.Button("Check Route Feasibility")
-            result_output = gr.JSON(label="Feasibility Result (Route, Fuel, Refueling Info)")
+            result_output = gr.HTML(label="Feasibility Result (Route, Fuel, Refueling Info)")
         
         with gr.Column():
             gr.Markdown("## Route Map")
