@@ -17,7 +17,25 @@ def create_route_map(airports, lat_long_dict, optimal_route, refuel_sectors):
     for i, airport in enumerate(optimal_route):
         lat, lon = lat_long_dict[airport]
         bounds.append([lat, lon])
-        folium.Marker([lat, lon], popup=f"{airport} - {airports[airport]}").add_to(route_map)
+        folium.Marker(
+            [lat, lon], 
+            popup=f"{airport} - {airports[airport]}",
+            icon=folium.DivIcon(html=f'''
+                <div style="
+                    background-color: white;
+                    border: 2px solid black;
+                    border-radius: 50%;
+                    width: 30px;
+                    height: 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 14pt;
+                    color: black;
+                ">{i + 1}</div>
+            ''')
+        ).add_to(route_map)
+
 
     # Draw lines between the airports
     for i in range(len(optimal_route) - 1):
