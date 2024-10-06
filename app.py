@@ -33,23 +33,25 @@ def check_route(airport_selections, aircraft_type):
     
     feasibility_result = check_route_feasibility(optimal_route, trip_distance, aircraft_specs)
     map_html = create_route_map(airports_dict, lat_long_dict, optimal_route, feasibility_result["Refuel Sectors"])
-    
+
     sector_details_html = """
     <table border="1" style="border-collapse: collapse; width: 100%;">
         <tr>
             <th>Sector</th>
-            <th>Fuel Required (kg)</th>
+            <th>Fuel Required (Tonnes)</th>
             <th>Flight Time (hrs)</th>
             <th>Refuel Required</th>
+            <th>CO2 Emission (Tonnes)</th>
         </tr>
     """
     for sector in feasibility_result["Sector Details"]:
         sector_details_html += f"""
         <tr>
             <td>{sector['Sector']}</td>
-            <td>{sector['Fuel Required (kg)']}</td>
+            <td>{round(sector['Fuel Required (kg)']/1000,2)}</td>
             <td>{sector['Flight Time (hrs)']}</td>
             <td>{sector['Refuel Required']}</td>
+            <td>{round(sector['Fuel Required (kg)']*3.16/1000,2)}</td>
         </tr>
         """
     sector_details_html += "</table>"
@@ -64,6 +66,8 @@ def check_route(airport_selections, aircraft_type):
         <p>{round(feasibility_result["Total Fuel Required (kg)"]/1000,2)}</p>
         <h3>Round Trip Flight Time (hrs)</h3>
         <p>{feasibility_result["Total Flight Time (hrs)"]}</p>
+        <h3>Total CO2 Emission (Tonnes)</h3>
+        <p>{round(feasibility_result["Total Fuel Required (kg)"]*3.16/1000,2)}</p>
         <h3>Can Fly Entire Route</h3>
         <p>Yes</p>
         <h3>Sector Details</h3>
