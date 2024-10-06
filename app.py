@@ -60,8 +60,8 @@ def check_route(airport_selections, aircraft_type):
         <p>{" -> ".join(optimal_route) + f" -> {optimal_route[0]}"}</p>
         <h3>Total Round Trip Distance</h3>
         <p>{optimal_distance} km</p>
-        <h3>Round Trip Fuel Required (kg)</h3>
-        <p>{feasibility_result["Total Fuel Required (kg)"]}</p>
+        <h3>Round Trip Fuel Required (Tonnes)</h3>
+        <p>{round(feasibility_result["Total Fuel Required (kg)"]/1000,2)}</p>
         <h3>Round Trip Flight Time (hrs)</h3>
         <p>{feasibility_result["Total Flight Time (hrs)"]}</p>
         <h3>Can Fly Entire Route</h3>
@@ -90,8 +90,8 @@ with gr.Blocks(theme=gr.themes.Default()) as demo:
     # Place components in two columns for results and map
     with gr.Row():
         with gr.Column():
-            airport_selector = gr.Dropdown(airport_options, multiselect=True, label="Select Airports (IATA - Name)")
-            aircraft_selector = gr.Dropdown(aircraft_options, label="Select Aircraft Type")
+            airport_selector = gr.Dropdown(airport_options, multiselect=True, label="Select Airports (IATA - Name)", value=["JFK - John F Kennedy Intl - United States", "LHR - Heathrow - United Kingdom", "SIN - Changi Intl - Singapore"])
+            aircraft_selector = gr.Dropdown(aircraft_options, label="Select Aircraft Type", value="Airbus A350-900")
             check_button = gr.Button("Check Route Feasibility")
             result_output = gr.HTML(label="Feasibility Result (Route, Fuel, Refueling Info)")
         
