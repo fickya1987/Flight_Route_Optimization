@@ -9,7 +9,6 @@ app_file: app.py
 pinned: false
 license: mit
 ---
-
 # Flight Route Optimization
 
 ## Check out the demo here -  [HuggingFace Space](https://huggingface.co/spaces/souvik0306/Flight_Route_Planner)
@@ -21,8 +20,15 @@ This project focuses on optimizing flight routes to minimize travel time and cos
 > **Note:** The actual flight time and performance may vary since the dataset used is very rudimentary. In the real world, the same aircraft can have different internal configurations, leading to variations in flight time and fuel consumption.
 
 ## Features
-- Efficient route calculation
-- Cost optimization
+
+- Route calculation based on Weather, Temperature
+- Total CO2 Emitted
+- Route Feasibility based on Aircraft
+
+## TO DO
+* [ ] Integrate an API to calculate distances using dedicated airways instead of the Great Circle Distance.
+* [ ] Develop additional optimization methods based on various parameters.
+* [ ] Identify layover points for aircraft unable to complete a route in one go, considering computational efficiency.
 
 ## Installation
 
@@ -46,4 +52,5 @@ This project focuses on optimizing flight routes to minimize travel time and cos
    python app.py
    ```
 2. Check out the [live demo](https://huggingface.co/spaces/souvik0306/Flight_Route_Planner) to see the project in action.
+
 ---
