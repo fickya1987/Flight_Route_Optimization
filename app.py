@@ -85,19 +85,26 @@ def check_route(airport_selections, aircraft_type):
 
 # Gradio Interface
 with gr.Blocks(theme=gr.themes.Default()) as demo:
-    gr.Markdown("## Airport Route Feasibility Checker")
+    gr.Markdown("## Flight Route Planner - [[GitHub]](https://github.com/souvik0306/Flight_Route_Optimization)")
+    # Step-wise instructions
+    gr.Markdown("""
+    ### Instructions
+    1. **Select Airports:** Choose multiple airports from the dropdown list to form your route.
+    2. **Select Aircraft Type:** Pick the type of aircraft you plan to use for the route.
+    3. **Check Route Feasibility:** Click the 'Check Route Feasibility' button to see the results, including the optimal route, fuel requirements, and refueling sectors.
+    """)
 
     # Place components in two columns for results and map
     with gr.Row():
         with gr.Column():
-            airport_selector = gr.Dropdown(airport_options, multiselect=True, label="Select Airports (IATA - Name)", value=["JFK - John F Kennedy Intl - United States", "LHR - Heathrow - United Kingdom", "SIN - Changi Intl - Singapore"])
+            airport_selector = gr.Dropdown(airport_options, multiselect=True, label="Select Airports (IATA - Name)", value=["JFK - John F Kennedy Intl - United States", "SIN - Changi Intl - Singapore", "LHR - Heathrow - United Kingdom"])
             aircraft_selector = gr.Dropdown(aircraft_options, label="Select Aircraft Type", value="Airbus A350-900")
             check_button = gr.Button("Check Route Feasibility")
-            result_output = gr.HTML(label="Feasibility Result (Route, Fuel, Refueling Info)")
-        
-        with gr.Column():
             gr.Markdown("## Route Map")
             map_output = gr.HTML(label="Interactive Route Map with Refueling Sectors")
+        
+        with gr.Column():
+            result_output = gr.HTML(label="Feasibility Result (Route, Fuel, Refueling Info)")
 
     # Connect the button click to the check_route function
     check_button.click(
