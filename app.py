@@ -88,7 +88,6 @@ with gr.Blocks(theme=gr.themes.Default()) as demo:
     gr.Markdown("## Flight Route Planner - [[GitHub]](https://github.com/souvik0306/Flight_Route_Optimization)")
     # Step-wise instructions
     gr.Markdown("""
-    ### Instructions
     1. **Select Airports:** Choose multiple airports from the dropdown list to form your route.
     2. **Select Aircraft Type:** Pick the type of aircraft you plan to use for the route.
     3. **Check Route Feasibility:** Click the 'Check Route Feasibility' button to see the results, including the optimal route, fuel requirements, and refueling sectors.
