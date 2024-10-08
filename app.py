@@ -100,12 +100,11 @@ with gr.Blocks(theme=gr.themes.Default()) as demo:
     # Place components in two columns for results and map
     with gr.Row():
         with gr.Column():
-            airport_selector = gr.Dropdown(airport_options, multiselect=True, label="Select Airports (IATA - Name)", value=["JFK - John F Kennedy Intl - United States", "SIN - Changi Intl - Singapore", "LHR - Heathrow - United Kingdom"])
+            airport_selector = gr.Dropdown(airport_options, multiselect=True, label="Select Airports (IATA - Name) (Max 5 Choices)", value=["JFK - John F Kennedy Intl - United States", "SIN - Changi Intl - Singapore", "LHR - Heathrow - United Kingdom"], max_choices=5)
             aircraft_selector = gr.Dropdown(aircraft_options, label="Select Aircraft Type", value="Airbus A350-900")
             check_button = gr.Button("Check Route Feasibility")
             gr.Markdown("## Route Map")
             map_output = gr.HTML(label="Interactive Route Map with Refueling Sectors")
-        
         with gr.Column():
             result_output = gr.HTML(label="Feasibility Result (Route, Fuel, Refueling Info)")
 
