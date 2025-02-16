@@ -75,7 +75,7 @@ def check_route_feasibility(optimal_route, trip_distance, aircraft_specs):
         sector_info = {
             "Sector": f"{optimal_route[i]} -> {optimal_route[i+1]}",
             "Fuel Required (kg)": round(fuel, 2),
-            "Flight Time (hrs)": round(time, 2),
+            "Sail Time (hrs)": round(time, 2),
             "Refuel Required": "Yes" if not can_fly else "No"
         }
         sector_details.append(sector_info)
@@ -95,7 +95,7 @@ def check_route_feasibility(optimal_route, trip_distance, aircraft_specs):
     final_leg_info = {
         "Sector": f"{optimal_route[-1]} -> {optimal_route[0]}",
         "Fuel Required (kg)": round(fuel, 2),
-        "Flight Time (hrs)": round(time, 2),
+        "Sail Time (hrs)": round(time, 2),
         "Refuel Required": "Yes" if not can_fly else "No"
     }
     sector_details.append(final_leg_info)
