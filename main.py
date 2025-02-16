@@ -3,7 +3,7 @@ from flight_distance import *
 from optimize import *
 from weather import *
 
-airport_identifiers = ['CCU', 'SIN', 'LHR']  # Replace with actual identifiers
+airport_identifiers = ['IDSUB', 'RUNVS', 'IDJKT']  # Replace with actual identifiers
 
 # Step 1: Get Airport Coordinates
 lat_long_dict = get_airport_lat_long(airport_identifiers)
@@ -28,7 +28,7 @@ print("Optimal Route:", " -> ".join(optimal_route) + f" -> {optimal_route[0]}")
 print("Total Round Trip Distance:", optimal_distance, "km")
 
 # Step 6: Fetch Aircraft Details (e.g., Boeing 787-9)
-aircraft_type = "Boeing 737-800"
+aircraft_type = "MERATUS BINTAN"
 aircraft_specs = get_aircraft_details(aircraft_type)
 
 # Check if aircraft details were retrieved successfully
@@ -38,8 +38,8 @@ else:
     # Step 7: Check if the aircraft can fly the route
     route_feasibility = check_route_feasibility(optimal_route, trip_distance, aircraft_specs)
 
-    if route_feasibility["Can Fly Entire Route"]:
+    if route_feasibility["Can Sail Entire Route"]:
         print(f"Total fuel required for the entire route: {route_feasibility['Total Fuel Required (kg)']} kg")
-        print(f"Total flight time for the entire route: {route_feasibility['Total Flight Time (hrs)']} hours")
+        print(f"Total sail time for the entire route: {route_feasibility['Total Sail Time (hrs)']} hours")
     else:
-        print("The aircraft cannot fly the entire route without refueling for at least one sector.")
+        print("The vessel cannot sail the entire route without refueling for at least one sector.")
