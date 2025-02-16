@@ -24,7 +24,7 @@ def get_airport_lat_long(identifiers):
     """
     Get latitude and longitude for a list of airport identifiers (IATA codes).
     """
-    csv_file = 'airport.csv' 
+    csv_file = 'seaport_01.csv' 
        
     start_time = time.time()
     df = pd.read_csv(csv_file)
@@ -71,8 +71,8 @@ def calculate_fuel_and_time_for_segment(segment_distance, aircraft_specs):
     max_fuel_capacity = aircraft_specs['Max_Fuel_Capacity_kg']
     reserve_fuel_percentage = 0.05  # 5% reserve fuel
 
-    climb_speed, descent_speed = 300, 350
-    climb_time, descent_time = 15 / 60, 10 / 60  # in hours
+    climb_speed, descent_speed = 30, 20
+    climb_time, descent_time = 45 / 60, 60 / 60  # in hours
     climb_distance = climb_speed * climb_time
     descent_distance = descent_speed * descent_time
 
