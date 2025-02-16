@@ -5,7 +5,7 @@ from flight_distance import *
 from optimize import *
 from weather import *
 
-airport_df = pd.read_csv(r'airport.csv') 
+airport_df = pd.read_csv(r'seaport_01.csv') 
 aircraft_df = pd.read_csv(r'aircraft.csv')  
 
 airport_options = [f"{row['IATA']} - {row['Airport_Name']} - {row['Country']}" for _, row in airport_df.iterrows()]
@@ -39,7 +39,7 @@ def check_route(airport_selections, aircraft_type):
         <tr>
             <th>Sector</th>
             <th>Fuel Required (Tonnes)</th>
-            <th>Flight Time (hrs)</th>
+            <th>Sail Time (hrs)</th>
             <th>Refuel Required</th>
             <th>CO2 Emission (Tonnes)</th>
         </tr>
@@ -49,14 +49,14 @@ def check_route(airport_selections, aircraft_type):
         <tr>
             <td>{sector['Sector']}</td>
             <td>{round(sector['Fuel Required (kg)']/1000,2)}</td>
-            <td>{sector['Flight Time (hrs)']}</td>
+            <td>{sector['Sail Time (hrs)']}</td>
             <td>{sector['Refuel Required']}</td>
             <td>{round(sector['Fuel Required (kg)']*3.16/1000,2)}</td>
         </tr>
         """
     sector_details_html += "</table>"
 
-    if feasibility_result["Can Fly Entire Route"]:
+    if feasibility_result["Can Sail Entire Route"]:
         result = f"""
         <h3>Optimal Route</h3>
         <p>{" -> ".join(optimal_route) + f" -> {optimal_route[0]}"}</p>
@@ -64,11 +64,11 @@ def check_route(airport_selections, aircraft_type):
         <p>{optimal_distance} km</p>
         <h3>Round Trip Fuel Required (Tonnes)</h3>
         <p>{round(feasibility_result["Total Fuel Required (kg)"]/1000,2)}</p>
-        <h3>Round Trip Flight Time (hrs)</h3>
+        <h3>Round Trip Sail Time (hrs)</h3>
         <p>{feasibility_result["Total Flight Time (hrs)"]}</p>
         <h3>Total CO2 Emission (Tonnes)</h3>
         <p>{round(feasibility_result["Total Fuel Required (kg)"]*3.16/1000,2)}</p>
-        <h3>Can Fly Entire Route</h3>
+        <h3>Can Sail Entire Route</h3>
         <p>Yes</p>
         <h3>Sector Details</h3>
         {sector_details_html}
@@ -79,7 +79,7 @@ def check_route(airport_selections, aircraft_type):
         <p>{" -> ".join(optimal_route) + f" -> {optimal_route[0]}"}</p>
         <h3>Total Round Trip Distance</h3>
         <p>{optimal_distance} km</p>
-        <h3>Can Fly Entire Route</h3>
+        <h3>Can Sail Entire Route</h3>
         <p>No, refueling required in one or more sectors.</p>
         <h3>Sector Details</h3>
         {sector_details_html}
@@ -89,19 +89,19 @@ def check_route(airport_selections, aircraft_type):
 
 # Gradio Interface
 with gr.Blocks(theme=gr.themes.Default()) as demo:
-    gr.Markdown("## Flight Route Planner - [[GitHub]](https://github.com/souvik0306/Flight_Route_Optimization)")
+    gr.Markdown("## Pelindo Vessel Route Planner")
     # Step-wise instructions
     gr.Markdown("""
-    1. **Select Airports:** Choose multiple airports from the dropdown list to form your route.
-    2. **Select Aircraft Type:** Pick the type of aircraft you plan to use for the route.
+    1. **Select Vessel:** Choose multiple Vessel from the dropdown list to form your route.
+    2. **Select Vessel Type:** Pick the type of Vessel you plan to use for the route.
     3. **Check Route Feasibility:** Click the 'Check Route Feasibility' button to see the results, including the optimal route, fuel requirements, and refueling sectors.
     """)
 
     # Place components in two columns for results and map
     with gr.Row():
         with gr.Column():
-            airport_selector = gr.Dropdown(airport_options, multiselect=True, label="Select Airports (IATA - Name) (Max 5 Choices)", value=["JFK - John F Kennedy Intl - United States", "SIN - Changi Intl - Singapore", "LHR - Heathrow - United Kingdom"], max_choices=5)
-            aircraft_selector = gr.Dropdown(aircraft_options, label="Select Aircraft Type", value="Airbus A350-900")
+            airport_selector = gr.Dropdown(airport_options, multiselect=True, label="Select Ports (Name) (Max 5 Choices)", value=["IDSUB - Port of Surabaya - Indonesia", "RUNVS - Port of Novorossiysk - Russia", "IDJKT - Port of Jakarta - Indonesia"], max_choices=5)
+            aircraft_selector = gr.Dropdown(aircraft_options, label="Select Vessel Type", value="MERATUS BINTAN")
             check_button = gr.Button("Check Route Feasibility")
             gr.Markdown("## Route Map")
             map_output = gr.HTML(label="Interactive Route Map with Refueling Sectors")
@@ -115,7 +115,7 @@ with gr.Blocks(theme=gr.themes.Default()) as demo:
         outputs=[result_output, map_output]
     )
     
-    gr.Markdown("**Note:** The actual flight time and performance may vary since the dataset used is very rudimentary. In the real world, the same aircraft can have different internal configurations, leading to variations in flight time and fuel consumption.")
+    gr.Markdown("**Note:** The actual sail time and performance may vary since the dataset used is very rudimentary. In the real case, the same vessel can have different internal configurations, leading to variations in sail time and fuel consumption.")
 
 # Launch the Gradio app
 demo.launch()
